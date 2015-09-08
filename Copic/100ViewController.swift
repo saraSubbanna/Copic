@@ -164,7 +164,7 @@ class _00ViewController: UIViewController {
         case 16:
             buttonBeep16.play()
         default:
-            println("i")
+            buttonBeep.play()
         }
         
     }
@@ -449,7 +449,7 @@ class _00ViewController: UIViewController {
             }
             setSingleButton(button16);
         default:
-            println("i")
+           var dkjbvkd = 1
         }
         inGame = false
     }
@@ -462,7 +462,7 @@ class _00ViewController: UIViewController {
         //secondBeep.play()
         time.text = String( stringInterpolationSegment: count) + " sec: " + String( stringInterpolationSegment: buttonsLeft) + " taps"
         count = count + 1
-        println("Greens left \(finishedSet)")
+        //println("Greens left \(finishedSet)")
         
     }
     

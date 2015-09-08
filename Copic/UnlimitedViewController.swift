@@ -8,12 +8,15 @@
 
 import UIKit
 import AudioToolbox
+import Parse
 import AVFoundation
 
 class UnlimitedViewController: UIViewController {
     
     @IBOutlet weak var screenNavigationBar: UINavigationBar!
     @IBOutlet weak var screenTitle: UILabel!
+    @IBOutlet weak var highScoreLabel: UILabel!
+    var pastScores: [PFObject]!
     
     var greenButton: UIImage = (UIImage(named: "greenButton") as UIImage?)!
     
@@ -111,6 +114,9 @@ class UnlimitedViewController: UIViewController {
         super.viewDidLoad()
         setButtons()
         
+        //var countDown = NSTimer.scheduledTimerWithTimeInterval(3/4, target: self, selector: Selector("updateSeconds"), userInfo: nil, repeats: true)
+        
+        highScoreLabel.text =  String (stringInterpolationSegment:NSUserDefaults.standardUserDefaults().integerForKey("highscore"))
         screenTitle.text = String( stringInterpolationSegment: score)
         
         buttonBeep = self.setupAudioPlayerWithFile("corckPop", type:"wav")
@@ -178,303 +184,55 @@ class UnlimitedViewController: UIViewController {
         return audioPlayer!
     }
     
+    func updateSeconds () {
+        randomButtonChange()
+        randomButtonChange()
+        randomButtonChange()
+    }
+    
     func setSingleButton(thisButton: UIButton) {
-//        if score <= 15 {
-//            var setter = Int(arc4random_uniform(3))
-//            if setter == 0 {
-//                thisButton.setImage(redButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 1 {
-//            
-//                thisButton.setImage(greenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == false {
-//                    finishedSet++
-//                }
-//            }
-//            if setter == 2 {
-//                thisButton.setImage(clearButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//        }
-//        if score >= 15 && score <= 35 {
-//            var setter = Int(arc4random_uniform(4))
-//            if setter == 0 {
-//                thisButton.setImage(redButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 1 {
-//                
-//                thisButton.setImage(greenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == false {
-//                    finishedSet++
-//                }
-//            }
-//            if setter == 2 {
-//                thisButton.setImage(clearButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 3 {
-//                thisButton.setImage(purpleButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//
-//        }
-//        if score > 50 && score <= 65 {
-//            var setter = Int(arc4random_uniform(6))
-//            if setter == 0 {
-//                thisButton.setImage(redButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 1 {
-//                
-//                thisButton.setImage(greenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == false {
-//                    finishedSet++
-//                }
-//            }
-//            if setter == 2 {
-//                thisButton.setImage(clearButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 3 {
-//                thisButton.setImage(purpleButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 4 {
-//                thisButton.setImage(tealButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 5 {
-//                thisButton.setImage(darkGreenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//
-//            
-//        }
-//        if score > 35 && score <= 50 {
-//            var setter = Int(arc4random_uniform(5))
-//            if setter == 0 {
-//                thisButton.setImage(redButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 1 {
-//                
-//                thisButton.setImage(greenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == false {
-//                    finishedSet++
-//                }
-//            }
-//            if setter == 2 {
-//                thisButton.setImage(clearButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 3 {
-//                thisButton.setImage(purpleButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 4 {
-//                thisButton.setImage(tealButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            
-//            
-//        }
-//        if score > 65 && score <= 80 {
-//            var setter = Int(arc4random_uniform(7))
-//            if setter == 0 {
-//                thisButton.setImage(redButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 1 {
-//                
-//                thisButton.setImage(greenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == false {
-//                    finishedSet++
-//                }
-//            }
-//            if setter == 2 {
-//                thisButton.setImage(clearButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 3 {
-//                thisButton.setImage(purpleButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 4 {
-//                thisButton.setImage(tealButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 5 {
-//                thisButton.setImage(darkGreenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 6 {
-//                thisButton.setImage(yellowButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            
-//        }
-//        if score > 80 {
-//            var setter = Int(arc4random_uniform(8))
-//            if setter == 0 {
-//                thisButton.setImage(redButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 1 {
-//                
-//                thisButton.setImage(greenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == false {
-//                    finishedSet++
-//                }
-//            }
-//            if setter == 2 {
-//                thisButton.setImage(clearButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 3 {
-//                thisButton.setImage(purpleButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 4 {
-//                thisButton.setImage(tealButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 5 {
-//                thisButton.setImage(darkGreenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 6 {
-//                thisButton.setImage(yellowButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//            if setter == 7 {
-//                thisButton.setImage(lightGreenButton, forState: UIControlState())
-//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-//                if inGame == true {
-//                    finishedSet--
-//                }
-//            }
-//
-//            
-//        }
-        var numButtons: Int = 3
-        if score >= 15 {
-            numButtons = 4
-        }
-        if score >= 30 {
-            numButtons = 5
-        }
-        if score >= 45 {
-            numButtons = 6
-        }
-        if score >= 60 {
-            numButtons = 7
-        }
-        if score > 15 {
-            numButtons = 4
-        }
-        var setter = Int(arc4random_uniform(UInt32(numButtons)))
+        if score <= 10 {
+            var setter = Int(arc4random_uniform(3))
             if setter == 0 {
-                
-                thisButton.setImage(yellowButton1, forState: UIControlState())
+                thisButton.setImage(redButton, forState: UIControlState())
                 thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
                 if inGame == true {
                     finishedSet--
                 }
             }
-                if setter == 1 {
-    
-                thisButton.setImage(yellowButton, forState:UIControlState())
+            if setter == 1 {
+            
+                thisButton.setImage(greenButton, forState: UIControlState())
                 thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-                    if inGame == false {
-                        finishedSet++
+                if inGame == false {
+                    finishedSet++
                 }
-                    }
+            }
+            if setter == 2 {
+                thisButton.setImage(clearButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+        }
+        if score >= 10 && score <= 20 {
+            var setter = Int(arc4random_uniform(4))
+            if setter == 0 {
+                thisButton.setImage(redButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 1 {
+                
+                thisButton.setImage(greenButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == false {
+                    finishedSet++
+                }
+            }
             if setter == 2 {
                 thisButton.setImage(clearButton, forState: UIControlState())
                 thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
@@ -483,36 +241,381 @@ class UnlimitedViewController: UIViewController {
                 }
             }
             if setter == 3 {
-                thisButton.setImage(yellowButton3, forState: UIControlState())
+                thisButton.setImage(purpleButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+
+        }
+        if score > 30 && score <= 40 {
+            var setter = Int(arc4random_uniform(6))
+            if setter == 0 {
+                thisButton.setImage(redButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 1 {
+                
+                thisButton.setImage(greenButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == false {
+                    finishedSet++
+                }
+            }
+            if setter == 2 {
+                thisButton.setImage(clearButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 3 {
+                thisButton.setImage(purpleButton, forState: UIControlState())
                 thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
                 if inGame == true {
                     finishedSet--
                 }
             }
             if setter == 4 {
-                thisButton.setImage(yellowButton4, forState: UIControlState())
+                thisButton.setImage(tealButton, forState: UIControlState())
                 thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
                 if inGame == true {
                     finishedSet--
                 }
             }
             if setter == 5 {
-                thisButton.setImage(yellowButton5, forState: UIControlState())
+                thisButton.setImage(darkGreenButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+
+            
+        }
+        if score > 20 && score <= 30 {
+            var setter = Int(arc4random_uniform(5))
+            if setter == 0 {
+                thisButton.setImage(redButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 1 {
+                
+                thisButton.setImage(greenButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == false {
+                    finishedSet++
+                }
+            }
+            if setter == 2 {
+                thisButton.setImage(clearButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 3 {
+                thisButton.setImage(purpleButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 4 {
+                thisButton.setImage(tealButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            
+            
+        }
+        if score > 40 && score <= 50 {
+            var setter = Int(arc4random_uniform(7))
+            if setter == 0 {
+                thisButton.setImage(redButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 1 {
+                
+                thisButton.setImage(greenButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == false {
+                    finishedSet++
+                }
+            }
+            if setter == 2 {
+                thisButton.setImage(clearButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 3 {
+                thisButton.setImage(purpleButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 4 {
+                thisButton.setImage(tealButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 5 {
+                thisButton.setImage(darkGreenButton, forState: UIControlState())
                 thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
                 if inGame == true {
                     finishedSet--
                 }
             }
             if setter == 6 {
-                thisButton.setImage(yellowButton6, forState: UIControlState())
+                thisButton.setImage(yellowButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            
+        }
+        if score > 50 {
+            var setter = Int(arc4random_uniform(8))
+            if setter == 0 {
+                thisButton.setImage(redButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 1 {
+                
+                thisButton.setImage(greenButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == false {
+                    finishedSet++
+                }
+            }
+            if setter == 2 {
+                thisButton.setImage(clearButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 3 {
+                thisButton.setImage(purpleButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 4 {
+                thisButton.setImage(tealButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 5 {
+                thisButton.setImage(darkGreenButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 6 {
+                thisButton.setImage(yellowButton, forState: UIControlState())
+                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                if inGame == true {
+                    finishedSet--
+                }
+            }
+            if setter == 7 {
+                thisButton.setImage(lightGreenButton, forState: UIControlState())
                 thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
                 if inGame == true {
                     finishedSet--
                 }
             }
 
+            
+        }
+//        var numButtons: Int = 3
+//        if score >= 15 {
+//            numButtons = 4
+//        }
+//        if score >= 30 {
+//            numButtons = 5
+//        }
+//        if score >= 45 {
+//            numButtons = 6
+//        }
+//        if score >= 60 {
+//            numButtons = 7
+//        }
+//        if score > 15 {
+//            numButtons = 4
+//        }
+//        var setter = Int(arc4random_uniform(UInt32(numButtons)))
+//            if setter == 0 {
+//                
+//                thisButton.setImage(yellowButton1, forState: UIControlState())
+//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+//                if inGame == true {
+//                    finishedSet--
+//                }
+//            }
+//                if setter == 1 {
+//    
+//                thisButton.setImage(yellowButton, forState:UIControlState())
+//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+//                    if inGame == false {
+//                        finishedSet++
+//                }
+//                    }
+//            if setter == 2 {
+//                thisButton.setImage(clearButton, forState: UIControlState())
+//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+//                if inGame == true {
+//                    finishedSet--
+//                }
+//            }
+//            if setter == 3 {
+//                thisButton.setImage(yellowButton3, forState: UIControlState())
+//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+//                if inGame == true {
+//                    finishedSet--
+//                }
+//            }
+//            if setter == 4 {
+//                thisButton.setImage(yellowButton4, forState: UIControlState())
+//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+//                if inGame == true {
+//                    finishedSet--
+//                }
+//            }
+//            if setter == 5 {
+//                thisButton.setImage(yellowButton5, forState: UIControlState())
+//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+//                if inGame == true {
+//                    finishedSet--
+//                }
+//            }
+//            if setter == 6 {
+//                thisButton.setImage(yellowButton6, forState: UIControlState())
+//                thisButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+//                if inGame == true {
+//                    finishedSet--
+//                }
+//            }
+//
 
     }
+    
+    func randomButtonChange() {
+        var switchUp = Int(arc4random_uniform(16))
+        switchUp = switchUp + 1
+        switch (switchUp) {
+        case 1:
+            if button1.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button1);
+        case 2:
+            if button2.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button2);
+        case 3:
+            if button3.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button3);
+        case 4:
+            if button4.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button4);
+        case 5:
+            if button5.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button5);
+        case 6:
+            if button6.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button6);
+        case 7:
+            if button7.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button7);
+        case 8:
+            if button8.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button8);
+        case 9:
+            if button9.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button9);
+        case 10:
+            if button10.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button10);
+        case 11:
+            if button11.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button11);
+        case 12:
+            if button12.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button12);
+        case 13:
+            if button13.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button13);
+        case 14:
+            if button14.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button14);
+        case 15:
+            if button15.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button15);
+        case 16:
+            if button16.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button16);
+        default:
+            var fhsnkvbs = 1
+        }
+        inGame = false
+    }
+
     
     
     override func didReceiveMemoryWarning() {
@@ -640,14 +743,14 @@ class UnlimitedViewController: UIViewController {
         case 16:
             buttonBeep16.play()
         default:
-            println("i")
+            buttonBeep.play()
         }
 
     }
     
     func checkTap (image: UIImage, button: UIButton) {
         
-        if image == yellowButton {
+        if image == greenButton {
 
             buttonBeep.volume = 0.6
             playABeep()
@@ -656,7 +759,9 @@ class UnlimitedViewController: UIViewController {
             button.setImage(clearButton, forState: UIControlState())
 
         } else if image == clearButton {
-            
+            if button1.currentImage != greenButton && button10.currentImage != greenButton && button11.currentImage != greenButton && button12.currentImage != greenButton && button13.currentImage != greenButton && button14.currentImage != greenButton && button15.currentImage != greenButton && button16.currentImage != greenButton && button2.currentImage != greenButton && button3.currentImage != greenButton && button4.currentImage != greenButton && button5.currentImage != greenButton && button6.currentImage != greenButton && button7.currentImage != greenButton && button8.currentImage != greenButton && button9.currentImage != greenButton {
+                    setButtons()
+            }
         } else {
             
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -674,107 +779,121 @@ class UnlimitedViewController: UIViewController {
         switchUp = switchUp + 1
         switch (switchUp) {
         case 1:
-            if button1.currentImage == yellowButton {
+            if button1.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button1);
         case 2:
-            if button2.currentImage == yellowButton {
+            if button2.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button2);
         case 3:
-            if button3.currentImage == yellowButton {
+            if button3.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button3);
         case 4:
-            if button4.currentImage == yellowButton {
+            if button4.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button4);
         case 5:
-            if button5.currentImage == yellowButton {
+            if button5.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button5);
         case 6:
-            if button6.currentImage == yellowButton {
+            if button6.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button6);
         case 7:
-            if button7.currentImage == yellowButton {
+            if button7.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button7);
         case 8:
-            if button8.currentImage == yellowButton {
+            if button8.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button8);
         case 9:
-            if button9.currentImage == yellowButton {
+            if button9.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button9);
         case 10:
-            if button10.currentImage == yellowButton {
+            if button10.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button10);
         case 11:
-            if button11.currentImage == yellowButton {
+            if button11.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button11);
         case 12:
-            if button12.currentImage == yellowButton {
+            if button12.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button12);
         case 13:
-            if button13.currentImage == yellowButton {
+            if button13.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button13);
         case 14:
-            if button14.currentImage == yellowButton {
+            if button14.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button14);
         case 15:
-            if button15.currentImage == yellowButton {
+            if button15.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button15);
         case 16:
-            if button16.currentImage == yellowButton {
+            if button16.currentImage == greenButton {
                 inGame = true
             }
             setSingleButton(button16);
         default:
-            println("i")
+            var dkjfvnbkfv = 1
         }
         inGame = false
     }
     
+    func deletePastScores() {
+        var lastScoreQuery = PFQuery (className: "Unlimited")
+        lastScoreQuery.whereKey("Name", matchesRegex: NSUserDefaults.standardUserDefaults().stringForKey("appName")! )
+        lastScoreQuery.findObjectsInBackgroundWithBlock {(result: [AnyObject]?, error: NSError?) -> Void in
+            self.pastScores = result as! [PFObject]
+            for obj in self.pastScores {
+                obj.delete()
+            }
+        }
+
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "unlimited game over") {
             //backgroundMusic.stop()
             var svc = segue.destinationViewController as! ScoreViewController;
-            svc.newScore = "Your score is: " + String( stringInterpolationSegment: score) + " Buttons"
+            svc.currentScore = self.score
+            svc.which = true
+            svc.newScore = String( stringInterpolationSegment: score) + " Buttons"
             NSUserDefaults.standardUserDefaults().integerForKey("highscore")
             
             //Check if score is higher than NSUserDefaults stored value and change NSUserDefaults stored value if it's true
             if score > NSUserDefaults.standardUserDefaults().integerForKey("highscore") {
+                deletePastScores()
                 NSUserDefaults.standardUserDefaults().setInteger(score, forKey: "highscore")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
             
-            println(NSUserDefaults.standardUserDefaults().integerForKey("highscore"))
-            svc.highScore = "Your best score is " + String (stringInterpolationSegment: NSUserDefaults.standardUserDefaults().integerForKey("highscore"))
+            //println(NSUserDefaults.standardUserDefaults().integerForKey("highscore"))
+            svc.highScore = "Best score: " + String (stringInterpolationSegment: NSUserDefaults.standardUserDefaults().integerForKey("highscore")) + " buttons"
         }
         if (segue.identifier == "unlimitedTutorial") {
             //backgroundMusic.stop()

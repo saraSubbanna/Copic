@@ -17,6 +17,7 @@
 import UIKit
 import AudioToolbox
 import AVFoundation
+import Parse
 
 
 class ViewController: UIViewController {
@@ -26,6 +27,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var screenNavigationBar: UINavigationBar!
 
     var greenButton: UIImage = (UIImage(named: "greenButton") as UIImage?)!
+    
+    @IBOutlet weak var bestScoreLabel: UILabel!
     
     var redButton: UIImage = (UIImage(named: "redButton") as UIImage?)!
     
@@ -38,6 +41,8 @@ class ViewController: UIViewController {
     var inGame = false
     
     var finishedSet = 0
+    
+    var pastScores: [PFObject]!
     
     var buttonBeep = AVAudioPlayer()
     var secondBeep = AVAudioPlayer()
@@ -92,6 +97,7 @@ class ViewController: UIViewController {
         
         super.viewDidLoad()
         setButtons()
+        bestScoreLabel.text = String (stringInterpolationSegment: NSUserDefaults.standardUserDefaults().integerForKey("timedscore"))
         
         buttonBeep = self.setupAudioPlayerWithFile("corckPop", type:"wav")
         buttonBeep2 = self.setupAudioPlayerWithFile("corckPop", type:"wav")
@@ -114,6 +120,7 @@ class ViewController: UIViewController {
         
         timer = NSTimer.scheduledTimerWithTimeInterval(25, target: self, selector: Selector("gameOver"), userInfo: nil, repeats: false)
         var countDown = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("updateSeconds"), userInfo: nil, repeats: true)
+         //var changer = NSTimer.scheduledTimerWithTimeInterval(3/8, target: self, selector: Selector("changing"), userInfo: nil, repeats: true)
         
         buttonBeep = self.setupAudioPlayerWithFile("corckPop", type:"wav")
         secondBeep = self.setupAudioPlayerWithFile("SecondBeep", type:"wav")
@@ -125,6 +132,12 @@ class ViewController: UIViewController {
         
     }
     
+    func changing () {
+        randomButtonChange()
+        randomButtonChange()
+        randomButtonChange()
+        randomButtonChange()
+    }
     
     func setButtons() {
         
@@ -315,7 +328,7 @@ class ViewController: UIViewController {
         case 16:
             buttonBeep16.play()
         default:
-            println("i")
+            buttonBeep.play()
         }
         
     }
@@ -343,92 +356,96 @@ class ViewController: UIViewController {
             setButtons()
         }
 
-            var switchUp = Int(arc4random_uniform(16))
-            switchUp = switchUp + 1
-            switch (switchUp) {
-            case 1:
-                if button1.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button1);
-            case 2:
-                if button2.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button2);
-            case 3:
-                if button3.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button3);
-            case 4:
-                if button4.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button4);
-            case 5:
-                if button5.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button5);
-            case 6:
-                if button6.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button6);
-            case 7:
-                if button7.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button7);
-            case 8:
-                if button8.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button8);
-            case 9:
-                if button9.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button9);
-            case 10:
-                if button10.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button10);
-            case 11:
-                if button11.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button11);
-            case 12:
-                if button12.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button12);
-            case 13:
-                if button13.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button13);
-            case 14:
-                if button14.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button14);
-            case 15:
-                if button15.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button15);
-            case 16:
-                if button16.currentImage == greenButton {
-                    inGame = true
-                }
-                setSingleButton(button16);
-            default:
-                println("i")
+        randomButtonChange()
+    }
+    
+    func randomButtonChange() {
+        var switchUp = Int(arc4random_uniform(16))
+        switchUp = switchUp + 1
+        switch (switchUp) {
+        case 1:
+            if button1.currentImage == greenButton {
+                inGame = true
             }
+            setSingleButton(button1);
+        case 2:
+            if button2.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button2);
+        case 3:
+            if button3.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button3);
+        case 4:
+            if button4.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button4);
+        case 5:
+            if button5.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button5);
+        case 6:
+            if button6.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button6);
+        case 7:
+            if button7.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button7);
+        case 8:
+            if button8.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button8);
+        case 9:
+            if button9.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button9);
+        case 10:
+            if button10.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button10);
+        case 11:
+            if button11.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button11);
+        case 12:
+            if button12.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button12);
+        case 13:
+            if button13.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button13);
+        case 14:
+            if button14.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button14);
+        case 15:
+            if button15.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button15);
+        case 16:
+            if button16.currentImage == greenButton {
+                inGame = true
+            }
+            setSingleButton(button16);
+        default:
+            var fhsnkvbs = 1
+        }
         inGame = false
     }
     
@@ -439,10 +456,28 @@ class ViewController: UIViewController {
     
     func updateSeconds() {
         //secondBeep.play()
-        countdownLabel.text = String( stringInterpolationSegment: count) + " sec: "
+        countdownLabel.text = String( stringInterpolationSegment: count) + " sec "
         count = count - 1
-        println("Greens left \(finishedSet)")
+        //randomButtonChange()
+        //randomButtonChange()
+        //randomButtonChange()
+        //randomButtonChange()
+        //randomButtonChange()
+        //randomButtonChange()
+        //println("Greens left \(finishedSet)")
 
+    }
+    
+    func deletePastScores() {
+        var lastScoreQuery = PFQuery (className: "Unlimited")
+        lastScoreQuery.whereKey("Name", matchesRegex: NSUserDefaults.standardUserDefaults().stringForKey("appName")! )
+        lastScoreQuery.findObjectsInBackgroundWithBlock {(result: [AnyObject]?, error: NSError?) -> Void in
+            self.pastScores = result as! [PFObject]
+            for obj in self.pastScores {
+                obj.delete()
+            }
+        }
+        
     }
     
     func stopTimer() {
@@ -454,19 +489,22 @@ class ViewController: UIViewController {
         if (segue.identifier == "game finished") {
             //backgroundMusic.stop()
             var svc = segue.destinationViewController as! ScoreViewController;
-            svc.newScore = "Your score is: " + String( stringInterpolationSegment: score) + " Buttons"
+            svc.newScore = String( stringInterpolationSegment: score) + " Buttons"
             if completedGame == true {
                 svc.newTitle = "Time's Up!"
             }
             NSUserDefaults.standardUserDefaults().integerForKey("timedscore")
+            svc.currentScore = self.score
+            svc.which = false
             
             //Check if score is higher than NSUserDefaults stored value and change NSUserDefaults stored value if it's true
             if score > NSUserDefaults.standardUserDefaults().integerForKey("timedscore") {
+                deletePastScores()
                 NSUserDefaults.standardUserDefaults().setInteger(score, forKey: "timedscore")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
 
-            svc.highScore = "Your best score is " + String (stringInterpolationSegment: NSUserDefaults.standardUserDefaults().integerForKey("timedscore")) + "taps"
+            svc.highScore = "Your best score is " + String (stringInterpolationSegment: NSUserDefaults.standardUserDefaults().integerForKey("timedscore")) + " taps"
         }
     }
 
